@@ -1,0 +1,186 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ game.getName }} | LISTaGAME{% endblock %}
+
+{% block javascripts %}
+    {% for jsFile in jsFiles %}
+        <script src="{{ jsFile }}"></script>
+    {% endfor %}
+{% endblock %}
+
+{% set commentsOnPage = false %}
+
+{% set cover = true %}
+{% set coverPath = asset('images/covers/cover_game_id_01.' ~ game.coverExtension) %}
+
+{% block cover %}
+    <!-- <div class="background_game_image container-fluid" style="background-image: url('{{ HOST }}public/images/covers/cover_game_id_{{ game.id }}.{{ game.getCover_extension }}')"></div> -->
+    <div class="background_game_image container-fluid" style="background-image: url('{{ coverPath }}')"></div>
+{% endblock %}
+
+{% block content %}
+
+    <h1>{{ game.name }}</h1>
+
+    <div><span class="bold">Développeur(s) :</span><br>
+        {% for developer in game.developers %} 
+            <p>- {{ developer.name }}</p>
+        {% endfor %}
+    </div>
+
+    <div><span class="bold">Genre(s) :</span><br>
+        {% for genre in game.genres %} 
+            <p>- {{ genre.name }}</p>
+        {% endfor %}
+    </div>
+
+    <div><span class="bold">Mode(s) de jeu :</span><br>
+        {% for mode in game.modes %} 
+            <p>- {{ mode.name }}</p>
+        {% endfor %}
+    </div>
+
+    <div><span class="bold">Sortie(s) :</span><br>
+        {% for release in game.releaseDates %} 
+            <p>- Sur {{ release.platform.name }}, édité par {{ release.publisher.name }} - {{ release.region.name }} - {{  release.date | date('d-m-Y') }}</p>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3"><span class="bold">Description :</span><br>
+        <div>{{ game.content|raw }}</div>
+    </div>
+
+    {% if game.getTo_validate == 0 %}
+
+        {% if game.updated_by_member == 0 %}
+
+            {% if member.id_type == 3 %}
+                <a href="{{ HOST }}edit-game/id/{{ game.id }}">
+                    <button type="button" class="btn btn-primary">Suggérer des modifications</button>
+                </a>
+            {% elseif member.getId_type == 1 or member.getId_type == 2 %}
+                <a href="{{ HOST }}edit-game/id/{{ game.id }}">
+                    <button type="button" class="btn btn-primary">Modifier</button>
+                </a>
+                <a href="#" data-url-delete-game="{{ HOST }}delete-game/id/{{ game.id }}" id="gameDeleteBtn" data-game-name="{{ game.name }}" data-toggle="modal" data-target="#deleteModal">
+                    <button type="button" class="btn btn-danger">Supprimer</button>
+                </a>
+            {% endif %}
+
+        {% else %}
+
+            <p class="bold text-danger">Ce jeu a été modifié récemment et est en attente de validation, il n'est pas possible de modifier la fiche.</p>
+
+        {% endif %}
+
+    {% else %}
+
+        <p class="bold text-danger">Ce jeu a été ajouté récemment et est en attente de validation, il n'est pas possible de modifier la fiche.</p>
+
+    {% endif %}
+
+
+    {% if connected %}
+
+        <hr>
+
+        <h4 id="anchorGame" class="anchor">Ajouter un commentaire</h4>
+
+        <form method="post" action="{{ HOST }}add-comment">
+
+            <div class="form-group">
+                <input type="hidden" name="game-id" value="{{ game.getId }}" />
+            </div>
+
+            <div class="form-group">
+                <input type="hidden" name="member-id" value="{{ member.getId }}" />
+            </div>
+
+            <div class="form-group">
+                <textarea class="form-control" id="content" name="content" rows="5"></textarea>
+            </div>
+        
+            <input type="submit" value="Envoyer" class="btn btn-primary" />
+
+        </form>
+
+    {% endif %}
+
+    <hr>
+
+    <h4>Commentaires</h4>
+
+    {% for comment in comments %}
+
+        {% set commentsOnPage = true %}
+
+        <div class="comment container">
+
+            {% if comment.getMemberType == 1 or comment.getMemberType == 2 %}
+                {% set backgroundComment = 'bg-dark text-light' %}
+            {% else %}
+                {% set backgroundComment = 'bg-secondary text-light' %}
+            {% endif %}
+
+            {% if comment.getReported == true %}
+                {% set backgroundComment = 'bg-warning text-dark' %}
+            {% endif %}
+
+            <div class="row">
+                
+                <p class="col-12 authorCommentBloc {{ backgroundComment }}">
+                    <span id="commentAuthor{{ comment.getMemberNickName }}" class="font-weight-bold">{{ comment.getMemberNickName }}</span> (publié le {{ comment.getCreationDate }}) - <span class="italic">{% if comment.getMemberType == 1 %}Administrateur{% elseif comment.getMemberType == 2 %}Modérateur{% else %}Membre{% endif %}</span>
+                </p>
+                <p class="col-12 textComment">{% if comment.getReported == true %}Commentaire signalé par la communauté.{% else %}{{ comment.getContent }}{% endif %}</p>
+                <div class="col-12 commentButtonBloc d-flex justify-content-end">
+        
+                {% if connected %}
+                    <a href="{{ HOST }}report-comment/id/{{ comment.getId }}/game-id/{{ game.getId }}">
+                        <button type="button" class="btn btn-warning btn-sm">Signaler</button>
+                    </a>
+                {% endif %}
+        
+                <!-- If admin or moderator, comments can be published or deleted -->
+                {% if member.getId_type == 1 or member.getId_type == 2 %}
+
+                    {% if comment.getReported == true %}
+                        <a class="ml-2" href="{{ HOST }}valid-comment/id/{{ comment.getId }}/game-id/{{ game.getId }}">
+                            <button type="button" class="btn btn-success btn-sm">Publier</button>
+                        </a>
+                    {% endif %}
+        
+                    <button type="button" class="btn btn-danger btn-sm ml-2" data-toggle="modal" data-target="#deleteModal" data-member-author="{{ comment.getMemberNickName }}" data-url-delete-comment="{{ HOST }}delete-comment/id/{{ comment.getId }}/game-id/{{ game.getId }}">Supprimer</button>
+
+                {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+
+    {% if commentsOnPage and renderPagination %}
+        {{ pagination.render }}
+    {% elseif not commentsOnPage %}
+        <p>Il n'y a actuellement aucun commentaire</p>
+    {% endif %}
+
+    {% if actionDone %}
+        <div class="alert alert-success alert-dismissible fade show actionErrorMessage fixed-bottom" role="alert">
+            {{ actionDone }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+
+    {% if errorMessage %}
+        <div class="alert alert-danger alert-dismissible fade show actionErrorMessage fixed-bottom" role="alert">
+            {{ errorMessage }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+
+{% endblock %}

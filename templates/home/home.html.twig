@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil | LISTaGAME{% endblock %}
+
+{% block content %}
+
+    {% set elementsOnPage = false %}
+
+    {% for game in games %} 
+
+        {% set elementsOnPage = true %}
+        {% set cover = asset('images/covers/cover_game_id_01.' ~ game.coverExtension) %}
+
+        <div class="listGames">
+        
+            <a href="{{ path('show_game', {id: game.id}) }}" class="image-link">
+                <!-- <div class="background_game_image_home container" style="background-image: url('{{ HOST }}public/images/covers/cover_game_id_{{ game.getId }}.{{ game.getCover_extension }}')"></div> -->
+                <div class="background_game_image_home container" style="background-image: url('{{ cover }}')"></div>
+            </a>
+            <h3>
+                <a href="{{ path('show_game', {id: game.id}) }}">{{ game.name }}</a>
+            </h3>
+            <p>
+                {{ game.content|raw }}<br>
+                <a href="{{ path('show_game', {id: game.id}) }}">Voir la suite</a>
+            </p>
+
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+    {% if elementsOnPage and renderPagination %}
+        {{ pagination.render }}
+    {% elseif not elementsOnPage %}
+        <p>Il n'y a actuellement aucun article</p>
+    {% endif %}
+
+    {% if actionDone %}
+        <div class="alert alert-success alert-dismissible fade show actionErrorMessage fixed-bottom" role="alert">
+            {{ actionDone }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+
+    {% if errorMessage %}
+        <div class="alert alert-danger alert-dismissible fade show actionErrorMessage fixed-bottom" role="alert">
+            {{ errorMessage }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+
+{% endblock %}

@@ -2,11 +2,175 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{% endblock %}</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
+
+        <!-- JQUERY UI CSS -->
+        <link href="{{ asset('css/jquery-ui.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/jquery-ui.theme.min.css') }}" rel="stylesheet">
+
+        <!-- CSS -->
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
         {% block stylesheets %}{% endblock %}
+
+        <!-- FONT AWESOME -->
+        <link href="{{ asset('fontawesome/webfonts/all.css') }}" rel="stylesheet">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Kanit:700&display=swap" rel="stylesheet">
+
+        <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+        </style>
+
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top navbar-bg {% if connected %}nav-padding-right{% endif %}">
+            <a class="navbar-brand logo" href="{{ path('home') }}">LISTaGAME</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('home') }}">Accueil</a>
+                    </li>
+                    {#{% if member.getId_type == 3 %}#}
+                        <li class="nav-item">
+                            <a href="{{ path('create-game') }}" class="nav-link">Ajouter un jeu</a>
+                        </li>
+                    {#{% elseif member.getId_type == 1 or member.getId_type == 2 %}#}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Administration</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a href="{{ path('create-game') }}" class="dropdown-item">Ajouter un jeu</a>
+                                <a href="{{ HOST }}game-management" class="dropdown-item">Gérer les jeux</a>
+                                <a href="{{ HOST }}entity-management/entity/developer" class="dropdown-item">Gérer les développeurs</a>
+                                <a href="{{ HOST }}entity-management/entity/publisher" class="dropdown-item">Gérer les éditeurs</a>
+                                <a href="{{ HOST }}entity-management/entity/platform" class="dropdown-item">Gérer les supports</a>
+                                <a href="{{ HOST }}entity-management/entity/genre" class="dropdown-item">Gérer les genres</a>
+                                <a href="{{ HOST }}entity-management/entity/mode" class="dropdown-item">Gérer les modes</a>
+                                <a href="{{ HOST }}entity-management/entity/region" class="dropdown-item">Gérer les régions</a>
+                                {% if member.getId_type == 1 %}
+                                <a href="{{ HOST }}member-management" class="dropdown-item">Gérer les membres</a>
+                                <a href="{{ HOST }}requests-moderators" class="dropdown-item">Demandes pour être modérateur</a>
+                                {% endif %}
+                                <a href="{{ HOST }}added-game-member" class="dropdown-item">Jeux ajoutés par la communauté</a>
+                                <a href="{{ HOST }}updated-game-member" class="dropdown-item">Jeux modifiés par la communauté</a>
+                                <a href="{{ HOST }}reported-comments" class="dropdown-item">Modérer les commentaires</a>
+                            </div>
+                        </li>
+                    {#{% endif %}#}
+                </ul>
+                <form method="post" action="{{ HOST }}search-game" class="form-inline">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Chercher un jeu..." aria-label="Search" name="game">
+                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Chercher</button>
+                </form>
+
+                {% if not connected %}
+                    <a class="nav-link connection-link" href="{{ HOST }}connection">Connexion</a>
+                {% endif %}
+            </div>
+
+        </nav>
+
+        {% if connected %}
+            <div id="user" class="dropdown">
+                <div class="dropdown-toggle dropdown-user" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user-circle fa-2x"></i>
+                </div>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <p class="dropdown-item memberNickNameDropdown">{{ member.getNick_name}}</p>
+                    <a class="dropdown-item" href="{{ HOST }}infos-member/id/{{ member.getId }}">Profil</a>
+                    <a class="dropdown-item" href="{{ HOST }}logout">Déconnexion</a>
+                </div>
+            </div>
+        {% endif %}
+    
+        {% block cover %}{% endblock %}
+
+        <main role="main" {% if cover %} class="gameViewContainer container" {% else %} class="mainContainer container" {% endif %}>
+
+            {% block content %}{% endblock %}
+
+            <!-- DELETE MODAL -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Suppression</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Souhaitez-vous vraiment effacer <span class="modal-text"></span> ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                            <a href="">
+                                <button type="button" class="btn btn-primary" id="modalConfirmBtn">Effacer</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="container-fluid fixed-bottom d-flex justify-content-center align-items-center p-2 footer-bg">
+                <p><span class="text-light">ListaGame - Projet étudiant - Openclassrooms - 2019</span></p>
+            </footer>
+
+        </main><!-- /.container -->                
+
     </body>
+
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <!-- JQUERY UI -->
+    <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+
+    <!-- BOOSTRAP JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js" integrity="sha384-7aThvCh9TypR7fIc2HV4O/nFMVCBwyIUKL8XCtKE+8xgCgl/PQGuFsvShjr74PBp" crossorigin="anonymous"></script>
+
+    <!-- SCRIPTS JS -->
+    {% block javascripts %}{% endblock %}
+
+    <!-- TINYMCE -->
+    <!-- <script src="{{ VENDOR }}tinymce/js/tinymce/tinymce.min.js"></script> -->
+    <script type="text/javascript">
+        tinymce.init({
+            selector: '#tinymcetextarea',  // change this value according to your HTML
+            init_instance_callback: function (editor) {
+                editor.on('change', function (e) {
+                    
+                  $('.missContent').css('display', 'none');
+                });
+            },
+            plugins: [
+                'advlist autolink autoresize link image lists charmap print preview hr anchor pagebreak spellchecker',
+                'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+                'save table directionality emoticons template paste'
+            ],
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+        });
+    </script>
+
 </html>

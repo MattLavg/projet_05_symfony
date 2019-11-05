@@ -1,0 +1,379 @@
+/* GENERAL */
+
+.mainContainer {
+    padding-top : 100px;
+    padding-bottom : 100px;
+}
+
+.gameViewContainer {  /* When game view is displayed */
+    padding-top : 20px;
+    padding-bottom : 100px;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+h1 {
+    font-size: 1.6em;
+}
+
+/* LOGO */
+
+.logo {
+    font-family: 'Kanit', Arial, Helvetica, sans-serif
+}
+
+/* NAVBAR and FOOTER */
+
+.nav-padding-right {
+    padding-right: 50px;
+}
+
+.connection-link {
+    color: #F0F0F0;
+}
+
+.navbar-bg,
+.footer-bg,
+#user {
+    background-color: rgb(226, 0, 0);
+}
+
+#user {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 56px;
+    z-index: 1040;
+    cursor: pointer;
+}
+
+.dropdown-user {
+    height: 56px;
+}
+
+#user i {
+    color: #F0F0F0;
+    position: relative;
+    top: 12px;
+    left: 0px;
+}
+
+.memberNickNameDropdown {
+    font-weight: bold;
+    border-bottom: 1px solid rgb(216, 216, 216);
+    cursor: default;
+}
+
+.memberNickNameDropdown:hover {
+    background-color: inherit;
+}
+
+/* CONNEXION PAGE */
+
+.col-connexion-left {
+    border-right: 1px solid rgb(202, 202, 202);
+}
+
+/* BACK OFFICE LEFT MENU */
+
+.leftMenu {
+    display: none;
+}
+
+/* ANCHORS */
+
+.anchor::before {
+    display: block; 
+    content: " "; 
+    margin-top: -90px; 
+    height: 90px; 
+    visibility: hidden; 
+    pointer-events: none;
+}
+
+/* ACTIONS */
+
+.actionErrorMessage {
+    bottom: 24px;  
+}
+
+
+/* HOME */
+
+.listGames {
+    -webkit-transition : background-color 0.5s ease;
+    transition : background-color 0.5s ease;
+}
+
+.listGames:hover {
+    background-color: #F0F0F0;
+}
+
+.modificationColor {
+    color: rgb(141, 141, 141);
+}
+
+.image-link {
+    display: block;
+}
+
+.background_game_image_home {
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    height: 400px;
+    background-size: cover;
+}
+
+/* GAME VUE */
+
+.background_game_image {
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    height: 400px;
+    background-size: cover;
+    margin-top: 56px;
+}
+
+/* GAME COMPARISON */
+
+.background_game_image_comparison {
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    height: 400px;
+    background-size: cover;
+
+}
+
+.redBackground {
+    background-color: rgb(255, 0, 0);
+    color: #FFFFFF;
+}
+
+.noImage {
+    background-color: rgb(194, 194, 194);
+}
+
+/* GAME EDIT */
+
+.bloc-entity-game-edit {
+    position: relative;
+}
+
+.cross-cancel {
+    position: absolute;
+    top: 4px;
+    left: 0;
+    display: none;
+}
+
+.cross-cancel-game-update {
+    position: absolute;
+    top: 4px;
+    left: 0;
+}
+
+.cross-cancel-release {
+    position: absolute;
+    top: 72px;
+    left: 8px;
+    display: none;
+}
+
+.cross-cancel-release-game-update {
+    position: absolute;
+    top: 72px;
+    left: 8px;
+}
+
+.cross-game-edit {
+    color: rgb(255, 0, 0);
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.circle-game-edit:hover {
+    color: rgb(190, 2, 2);
+}
+
+.background-release-game-update {
+    background-color: #F2F2F2;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.redText {
+    color: rgb(255, 0, 0);
+}
+
+/* COMMENTS */
+
+.comment.container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.comment.container p {
+    margin-bottom: 0px;
+}
+
+.authorCommentBloc {
+    margin-bottom: 0;
+}
+
+.authorComment {
+    font-weight: bold;
+}
+
+.textComment {
+    background-color: rgb(221, 221, 221);
+}
+
+.authorCommentBloc, .textComment {
+    padding: 1em;
+}
+
+.commentButtonBloc {
+    background-color: rgb(221, 221, 221);
+    padding: 0.5em;
+}
+
+/* POST MANAGEMENT */
+
+.tableMargin {
+    margin-top: 20px;
+}
+
+/* ENTITIES PAGES */
+
+.entityMessageSuccess {
+    display: none;
+}
+
+.entityMessageError {
+    display: none;
+}
+
+/* SEARCH VUE */
+
+.searchLink {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+/* FOOTER */
+
+footer p {
+    margin-top: inherit;
+    margin-bottom: inherit;
+}
+
+footer a:hover {
+    color: #FFFFFF;
+}
+
+
+/* MEDIA QUERIES */
+
+@media all and (min-width: 420px) {
+
+    .homeTitleImage {
+        font-size: 1.7em;
+    }
+
+    .subtitle {
+        font-size: 1.1em;
+    }
+
+}
+
+@media all and (min-width: 600px) {
+
+    .homeTitleImage {
+        font-size: 2em;
+    }
+
+    .subtitle {
+        font-size: 1.3em;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+}
+
+@media all and (min-width: 768px) {
+
+    .homeTitleImage {
+        font-size: 2.3em;
+    }
+
+    .subtitle {
+        font-size: 1.5em;
+    }
+
+    h1 {
+        font-size: 2.4em;
+    }
+
+}
+
+@media all and (min-width: 992px) {
+
+    .homeTitleImage {
+        font-size: 2.6em;
+    }
+
+    .subtitle {
+        font-size: 1.7em;
+    }
+
+    h1 {
+        font-size: 2.5rem; /* Bootstrap default size */
+    }
+
+    .leftMenu {
+        margin-bottom: 20px;
+        display: block;
+    }
+
+}
+
+@media all and (min-width: 1280px) {
+
+    .homeTitleImage {
+        font-size: 2.9em;
+    }
+
+    .subtitle {
+        font-size: 1.9em;
+    }
+
+}
+
+
+@media all and (min-width: 1400px) {
+
+    .homeTitleImage {
+        font-size: 3.5em;
+    }
+
+    .subtitle {
+        font-size: 2em;
+    }
+
+}

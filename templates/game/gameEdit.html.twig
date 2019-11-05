@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% form_theme editGameForm 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Ajouter ou modifier un jeu | LISTaGAME{% endblock %}
+
+{% block content %}
+
+    <h1>Ajout ou modification d'un jeu</h1>
+
+    {{ form_start(editGameForm) }}
+
+        {{  form_row(editGameForm.name, {
+            'attr': {
+                'placeholder': 'Titre de l\'article'
+            }}) 
+        }}
+        {{  form_row(editGameForm.content, {
+            'attr': {
+                'placeholder': 'Contenu de l\'article'
+            }}) 
+        }}
+
+        {% if editGame %}
+            <button type="submit" class="btn btn-success">Modifier</button>
+        {% else %}
+            <button type="submit" class="btn btn-success">Ajouter</button>
+        {% endif %}
+
+    {{ form_end(editGameForm) }}
+
+{% endblock %}
