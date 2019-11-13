@@ -3,6 +3,13 @@
 
 {% block title %}Ajouter ou modifier un jeu | LISTaGAME{% endblock %}
 
+{% block javascript %}
+    {% for jsFile in jsFiles %}
+        {% set jsFile = asset('js/' ~ jsFile) %}
+        <script src="{{ jsFile }}"></script>
+    {% endfor %}
+{% endblock %}
+
 {% block content %}
 
     <h1>Ajout ou modification d'un jeu</h1>
@@ -14,11 +21,41 @@
                 'placeholder': 'Titre de l\'article'
             }}) 
         }}
+        
         {{  form_row(editGameForm.content, {
             'attr': {
                 'placeholder': 'Contenu de l\'article'
             }}) 
         }}
+        {# {{ form_row(editGameForm.developers) }} #}
+
+        {{ form_row(editGameForm.developers) }}
+   
+
+
+        {# {{ form_row(editGameForm.developers, {'full_name': 'game[developers][]'}) }} #}
+
+
+
+        {# <h4>Le ou les développeur(s) du jeu :</h4>
+        <div>
+            <div class="entity-group-game-edit">
+                <div class="form-group bloc-entity-game-edit" >
+                    <a href="#" class="cross-cancel"><i class="fas fa-times-circle fa-2x cross-game-edit"></i></a>
+                    <select name="developer[0]" class="form-control developerList mb-2">
+                            <option value="">Choisissez un développeur</option>
+                        {% for developer in developers %}
+                            <option value="{{ developer.id }}">{{ developer.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="redText"></span>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary addEntityForm">Ajouter un développeur</button>
+        </div>
+        <hr> #}
+
 
         {% if editGame %}
             <button type="submit" class="btn btn-success">Modifier</button>
@@ -27,5 +64,6 @@
         {% endif %}
 
     {{ form_end(editGameForm) }}
+    {#{{ form_end(editGameForm, {'render_rest': false}) }}#}
 
 {% endblock %}

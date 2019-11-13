@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Game;
+use App\Entity\Developer;
 use App\Entity\ReleaseDate;
 use App\Form\GameType;
 
@@ -24,13 +25,6 @@ class GameController extends AbstractController
         // $repo = $this->getDoctrine()->getRepository(Game::class);
         // $game = $repo->find($id);
 
-        // $repo = $this->getDoctrine()->getRepository(ReleaseDate::class);
-        // $releases = $repo->findBy(
-        //     [
-        //         'game' => $game
-        //     ]
-        // );
-
         return $this->render('game/game.html.twig', [
             'game' => $game
         ]);
@@ -42,21 +36,42 @@ class GameController extends AbstractController
      */
     public function showEditGame(Game $game = null, Request $request, EntityManagerInterface $manager)
     {
+        // dd($request);
         if(!$game) {
             $game = new Game();
+
+            
         }
 
-        // $form = $this->createFormBuilder($game)
-        //              ->add('name', TextType::class)
-        //              ->add('content', TextareaType::class)
-        //              ->getForm();
+        // dd($request);
+        // dump($request);
+        // dd($request->request->get('game')['developers']);
+
+        // Get all developers
+        // $repo = $this->getDoctrine()->getRepository(Developer::class);
+        // $developers = $repo->findAll();
+
+            // foreach($developersId as $developerId) {
+            //     $developer = new Developer();
+            //     $developer = $developer->setId($developerId);
+            //     dd($game);
+            //     $game->addDeveloper($developer);
+            // }
+
+        // To display developers in select
+        // To avoid an empty field
+        $developer = new Developer();
+        $game->addDeveloper($developer);
 
         $form = $this->createForm(GameType::class, $game);
 
+        // dd($request->request->all());
+        
         $form->handleRequest($request);
-
+        
         if($form->isSubmitted() && $form->isValid()) {
-
+            // dd($form->getData());
+            // dd($game);
             if(!$game->getId()){
                 $game->setCoverExtension('jpg');
             }
@@ -67,10 +82,16 @@ class GameController extends AbstractController
             return $this->redirectToRoute('show_game', ['id' => $game->getId()]);
         }
 
+        $jsFiles = [
+            'editFormElements.js',
+            'checkForm.js'
+        ];
+
         // if game exists, game is true
         return $this->render('game/gameEdit.html.twig', [
             'editGameForm' => $form->createView(),
-            'editGame' => $game->getId() !== null
+            'editGame' => $game->getId() !== null,
+            'jsFiles' => $jsFiles
         ]);
     }
 }
