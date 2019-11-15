@@ -177,7 +177,7 @@ h1 {
     position: absolute;
     top: 4px;
     left: 0;
-    display: none;
+    /* display: none; */
 }
 
 .cross-cancel-game-update {
