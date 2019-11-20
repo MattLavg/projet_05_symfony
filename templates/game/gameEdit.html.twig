@@ -12,7 +12,11 @@
 
 {% block content %}
 
-    <h1>Ajout ou modification d'un jeu</h1>
+    {% if editGame %}
+        <h1>Modifier un jeu</h1>
+    {% else %}
+        <h1>Ajouter un jeu</h1>
+    {% endif %}
 
     {{ form_start(editGameForm) }}
 
@@ -29,8 +33,27 @@
         }}
         {# {{ form_row(editGameForm.developers) }} #}
 
-        {{ form_row(editGameForm.developers) }}
-   
+        <hr>
+
+        <div>
+            {{ form_row(editGameForm.developers, {
+                'attr': {
+                    'class': 'game_lists'
+                }})
+            }}
+            <button type="button" class="addListButton btn btn-danger">Ajouter un développeur</button>
+        </div>
+
+        <hr>
+
+        <div>
+            {{ form_row(editGameForm.genres, {
+                'attr': {
+                    'class': 'game_lists'
+                }}) 
+            }}
+            <button type="button" class="addListButton btn btn-danger">Ajouter un genre</button>
+        </div>
 
         {# {{ form_row(editGameForm.developers, {'full_name': 'game[developers][]'}) }} #}
 
@@ -57,9 +80,9 @@
 
 
         {% if editGame %}
-            <button type="submit" class="btn btn-success">Modifier</button>
+            <button type="submit" class="btn btn-success mt-5">Modifier</button>
         {% else %}
-            <button type="submit" class="btn btn-success">Ajouter</button>
+            <button type="submit" class="btn btn-success mt-5">Ajouter</button>
         {% endif %}
 
     {{ form_end(editGameForm) }}

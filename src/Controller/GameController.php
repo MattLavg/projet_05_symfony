@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Game;
 use App\Entity\Developer;
+use App\Entity\Genre;
 use App\Entity\ReleaseDate;
 use App\Form\GameType;
 
@@ -62,6 +63,9 @@ class GameController extends AbstractController
         // To avoid an empty field
         $developer = new Developer();
         $game->addDeveloper($developer);
+
+        $genre = new Genre();
+        $game->addGenre($genre);
 
         $form = $this->createForm(GameType::class, $game);
 

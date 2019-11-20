@@ -1,29 +1,21 @@
-var $collectionHolder;
 
-// setup an "add a tag" link
-var $addTagButton = $('<button type="button" class="add_tag_link">Add a tag</button>');
-var $newLinkLi = $('#game_developers').append($addTagButton);
-var cross = '<a href="#" class="cross-cancel"><i class="fas fa-times-circle fa-2x cross-game-edit"></i></a>';
 
 jQuery(document).ready(function() {
-   
-    // Get the ul that holds the collection of tags
-    $collectionHolder = $('#game_developers');
 
-    // add the "add a tag" anchor and li to the tags ul
-    $collectionHolder.append($newLinkLi);
+    // add a new list form on click
+    $('.addListButton').on('click', function(e) {
+        
+        var $collectionHolder = $(this).parent().find('.game_lists');
 
-    // count the current form inputs we have (e.g. 2), use that as the new
-    // index when inserting a new item (e.g. 2)
-    $collectionHolder.data('index', $collectionHolder.find(':input').length);
+        // count the current form inputs we have (e.g. 2), use that as the new
+        // index when inserting a new item (e.g. 2)
+        $collectionHolder.data('index', $collectionHolder.find(':input').length);
 
-    $addTagButton.on('click', function(e) {
-        // add a new tag form (see next code block)
-        addTagForm($collectionHolder, $newLinkLi);
+        addTagForm($collectionHolder);
     });
 });
 
-function addTagForm($collectionHolder, $newLinkLi) {
+function addTagForm($collectionHolder) {
     // Get the data-prototype explained earlier
     var prototype = $collectionHolder.data('prototype');
 
@@ -45,18 +37,16 @@ function addTagForm($collectionHolder, $newLinkLi) {
 
     // Display the form in the page in an li, before the "Add a tag" link li
     var div = '<div class="position-relative pl-5"></div>';
-    var $newFormLi = $(div).append(newForm);
-    // var $newFormLi = $('<div></div>').append(newForm);
+    var $newFormDiv = $(div).append(newForm);
 
+    var cross = '<a href="#" class="cross-cancel"><i class="fas fa-times-circle fa-2x cross-game-edit"></i></a>';
 
-    // also add a remove button, just for this example
-    // $newFormLi.append('<a href="#" class="remove-tag">x</a>');
-    $newFormLi.append(cross);
+    // Add a remove button
+    $newFormDiv.append(cross);
 
-    // $newLinkLi.before($newFormLi);
-    $('#game_developers button').before($newFormLi);
+    $collectionHolder.append($newFormDiv);
 
-    // handle the removal, just for this example
+    // handle the removal
     $('.cross-cancel').click(function(e) {
         e.preventDefault();
         
@@ -64,4 +54,4 @@ function addTagForm($collectionHolder, $newLinkLi) {
         
         return false;
     });
-}
+};
