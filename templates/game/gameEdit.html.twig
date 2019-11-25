@@ -55,6 +55,29 @@
             <button type="button" class="addListButton btn btn-danger">Ajouter un genre</button>
         </div>
 
+        <hr>
+
+        <div>
+            {{ form_row(editGameForm.modes, {
+                'attr': {
+                    'class': 'game_lists'
+                }}) 
+            }}
+            <button type="button" class="addListButton btn btn-danger">Ajouter un mode</button>
+        </div>
+
+        <hr>
+
+        <div>
+            {{ form_row(editGameForm.releaseDates, {
+                'label': 'Date de sortie',
+                'attr': {
+                    'class': 'game_lists'
+                }}) 
+            }}
+            <button type="button" class="addListButton btn btn-danger">Ajouter une date</button>
+        </div>
+
         {# {{ form_row(editGameForm.developers, {'full_name': 'game[developers][]'}) }} #}
 
 

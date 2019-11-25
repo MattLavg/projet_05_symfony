@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Game;
 use App\Entity\Developer;
 use App\Entity\Genre;
+use App\Entity\Mode;
 use App\Entity\ReleaseDate;
 use App\Form\GameType;
 
@@ -37,36 +38,40 @@ class GameController extends AbstractController
      */
     public function showEditGame(Game $game = null, Request $request, EntityManagerInterface $manager)
     {
+        
+
         // dd($request);
         if(!$game) {
             $game = new Game();
 
-            
+            $developer = new Developer();
+            $genre = new Genre();
+            $mode = new Mode();
+            $release = new ReleaseDate();
+
+            $game->addDeveloper($developer);
+            $game->addGenre($genre);
+            $game->addMode($mode);
+            $game->addReleaseDate($release);
         }
 
-        // dd($request);
-        // dump($request);
-        // dd($request->request->get('game')['developers']);
-
         // Get all developers
-        // $repo = $this->getDoctrine()->getRepository(Developer::class);
-        // $developers = $repo->findAll();
+        // $repo = $this->getDoctrine()->getRepository(Platform::class);
+        // $platforms = $repo->findAll();
 
-            // foreach($developersId as $developerId) {
-            //     $developer = new Developer();
-            //     $developer = $developer->setId($developerId);
-            //     dd($game);
-            //     $game->addDeveloper($developer);
-            // }
+        // foreach($developersId as $developerId) {
+        //     $developer = new Developer();
+        //     $developer = $developer->setId($developerId);
+        //     dd($game);
+        //     $game->addDeveloper($developer);
+        // }
+        
 
         // To display developers in select
         // To avoid an empty field
-        $developer = new Developer();
-        $game->addDeveloper($developer);
-
-        $genre = new Genre();
-        $game->addGenre($genre);
-
+        
+        
+        
         $form = $this->createForm(GameType::class, $game);
 
         // dd($request->request->all());

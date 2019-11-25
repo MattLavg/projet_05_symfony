@@ -5,6 +5,9 @@ namespace App\Form;
 use App\Entity\Game;
 use App\Entity\Developer;
 use App\Entity\Genre;
+use App\Entity\Mode;
+use App\Entity\ReleaseDate;
+use App\Entity\Platform;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -47,6 +50,29 @@ class GameType extends AbstractType
                     'class' => Genre::class,
                     'choice_value' => 'id',
                     'choice_label' => 'name',
+                    'label' => false
+                ] 
+            ])
+
+            ->add('modes', CollectionType::class, [
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'entry_type' => EntityType::class,
+                'entry_options' => [
+                    'class' => Mode::class,
+                    'choice_value' => 'id',
+                    'choice_label' => 'name',
+                    'label' => false
+                ] 
+            ])
+
+            ->add('releaseDates', CollectionType::class, [
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'entry_type' => ReleaseDateType::class,
+                'entry_options' => [
                     'label' => false
                 ] 
             ]);
