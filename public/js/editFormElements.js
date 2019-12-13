@@ -1,5 +1,3 @@
-
-
 jQuery(document).ready(function() {
 
     // add a new list form on click
@@ -13,6 +11,12 @@ jQuery(document).ready(function() {
 
         addTagForm($collectionHolder);
     });
+
+    $('.js-datepicker').datepicker({
+        format: 'yyyy-mm-dd',
+        language: 'fr-FR'
+    });
+
 });
 
 function addTagForm($collectionHolder) {

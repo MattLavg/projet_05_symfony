@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ReleaseDateType extends AbstractType
@@ -39,7 +40,9 @@ class ReleaseDateType extends AbstractType
             ])
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
-                'label' => false
+                'label' => false,
+                'html5' => false,
+                'attr' => ['class' => 'js-datepicker']
             ])
         ;
     }

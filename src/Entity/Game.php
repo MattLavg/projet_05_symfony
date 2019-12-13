@@ -67,7 +67,7 @@ class Game
     private $modes;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ReleaseDate", mappedBy="game", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ReleaseDate", mappedBy="game", orphanRemoval=true, cascade={"persist"})
      */
     private $releaseDates;
 

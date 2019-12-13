@@ -86,6 +86,7 @@ class GameController extends AbstractController
             }
             
             $manager->persist($game);
+            // $manager->persist($release);
             $manager->flush();
 
             return $this->redirectToRoute('show_game', ['id' => $game->getId()]);

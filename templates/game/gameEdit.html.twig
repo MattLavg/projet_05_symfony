@@ -3,11 +3,17 @@
 
 {% block title %}Ajouter ou modifier un jeu | LISTaGAME{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+{% endblock %}
+
 {% block javascript %}
     {% for jsFile in jsFiles %}
         {% set jsFile = asset('js/' ~ jsFile) %}
         <script src="{{ jsFile }}"></script>
     {% endfor %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
 {% endblock %}
 
 {% block content %}
